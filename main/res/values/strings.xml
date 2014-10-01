@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="name">Name</string>
+    <string name="mail">Mail</string>
+    <string name="phone">Phone</string>
+    <string name="add">Add</string>
+    <string name="list">List</string>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="regular_expression_error">Wrong data</string>
+    <string name="title_activity_my_list">MyListActivity</string>
+    <string name="call">Call</string>
+    <string name="title_activity_detail">Detail</string>
+
+</resources>
