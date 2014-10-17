@@ -29,7 +29,37 @@ public class MyListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_list);
 
-        ArrayList<String> data = new ArrayList<String>();
+
+        ArrayList<Student> studentArrayList = CreateStudentList();
+
+        // Связываемся с ListView
+        ListView list = (ListView) findViewById(R.id.listView);
+        // создаем адаптер
+
+        final MyAdapter adapter = new MyAdapter(this,studentArrayList);
+
+        // устанавливаем адаптер списку
+
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                adapter.showDescription(position);
+            }
+        });
+
+        list.setAdapter(adapter);
+
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("Name");
+        String mail = intent.getStringExtra("Mail");
+        String phone = intent.getStringExtra("Phone");
+
+        Log.i("intent message", name +" "+ mail + " "+ phone);
+
+    }
+
+    private ArrayList<Student> CreateStudentList(){
+        ArrayList<Student> studentList = new ArrayList<Student>();
         DbReader mDbHelper = new DbReader(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
@@ -49,48 +79,15 @@ public class MyListActivity extends Activity {
         );
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
-            while(!cursor.isLast()){
-                data.add(cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_NAME)));
-                Log.i("Read data",cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_NAME)));
+            while(!cursor.isAfterLast()){
+                studentList.add(new Student(cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_NAME)),
+                        cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_MAIL)),
+                        cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_PHONE))
+                        ));
                 cursor.moveToNext();
             }
-            data.add(cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_NAME)));
-            Log.i("Read data",cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_NAME)));
         }
-
-
-        // Связываемся с ListView
-        ListView list = (ListView) findViewById(R.id.listView);
-        // создаем адаптер
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this, android.R.layout.simple_list_item_1, data);
-
-        // устанавливаем адаптер списку
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(MyListActivity.this, Detail.class);
-                cursor.moveToPosition(position);
-                String name = cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_NAME));
-                String mail = cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_MAIL));
-                String phone = cursor.getString(cursor.getColumnIndex(DbReader.COLUMN_PHONE));
-                intent.putExtra("Name", name);
-                intent.putExtra("Mail", mail);
-                intent.putExtra("Phone", phone);
-                startActivity(intent);
-            }
-        });
-
-        list.setAdapter(adapter);
-
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("Name");
-        String mail = intent.getStringExtra("Mail");
-        String phone = intent.getStringExtra("Phone");
-
-        Log.i("intent message", name +" "+ mail + " "+ phone);
-
+        return  studentList;
     }
 
     public void openDetails(){
