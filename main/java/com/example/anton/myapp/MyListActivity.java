@@ -1,6 +1,7 @@
 package com.example.anton.myapp;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,7 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.anton.myapp.R;
+import static com.example.anton.myapp.Constants.*;
 
 import java.util.ArrayList;
 
@@ -60,7 +61,7 @@ public class MyListActivity extends Activity {
 
     private ArrayList<Student> CreateStudentList(){
         ArrayList<Student> studentList = new ArrayList<Student>();
-        DbReader mDbHelper = new DbReader(this.getApplicationContext());
+        /*DbReader mDbHelper = new DbReader(this.getApplicationContext());
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 DbReader.COLUMN_NAME,
@@ -76,7 +77,8 @@ public class MyListActivity extends Activity {
                 null,                                     // don't group the rows
                 null,                                     // don't filter by row groups
                 null                                 // The sort order
-        );
+        );*/
+        cursor = getStudentsFromDB();
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){
@@ -90,8 +92,12 @@ public class MyListActivity extends Activity {
         return  studentList;
     }
 
-    public void openDetails(){
+    private Cursor getStudentsFromDB(){
+        ContentResolver resolver = getContentResolver();
 
+        String projection[] = new String[] {COLUMN_NAME, COLUMN_MAIL, COLUMN_PHONE};
+        Cursor cursor1= resolver.query(CONTENT_URI_PERSON, projection, null, null, null);
+        return cursor1;
     }
 
     @Override

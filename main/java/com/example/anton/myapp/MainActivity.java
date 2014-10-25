@@ -1,6 +1,7 @@
 package com.example.anton.myapp;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import static com.example.anton.myapp.Constants.*;
 
 
 
@@ -61,7 +63,7 @@ public class MainActivity extends Activity {
 
         if(checkName(name) && checkMail(mail) && checkPhone(phone)){
 
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            /*SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
             values.put(DbReader.COLUMN_NAME, name);
@@ -72,9 +74,9 @@ public class MainActivity extends Activity {
             newRowId = db.insert(
                     DbReader.TABLE_NAME,
                     DbReader.COLUMN_NAME_NULLABLE,
-                    values);
-
-            Log.i("Insert to DB" , String.valueOf(newRowId));
+                    values);*/
+            Student student = new Student(name, mail,phone);
+            insertToDB(student);
 
             Intent intent = new Intent(this, MyListActivity.class);
             intent.putExtra("Name", name);
@@ -86,6 +88,18 @@ public class MainActivity extends Activity {
             Toast.makeText(this, R.string.regular_expression_error,
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void insertToDB(Student student){
+        ContentResolver resolver = getContentResolver(); // !!!
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NAME, student.name);
+        values.put(COLUMN_NAME, student.mail);
+        values.put(COLUMN_PHONE, student.phone);
+
+
+        resolver.insert(CONTENT_URI_PERSON, values);
     }
 
 
@@ -104,6 +118,11 @@ public class MainActivity extends Activity {
     public boolean checkPhone(String phone){
         Matcher m = phonePattern.matcher(phone);
         Log.i("phone",phone + " " + m.matches());
+        return m.matches();
+    }
+
+    public boolean check(String text, Pattern pattern){
+        Matcher m = pattern.matcher(text);
         return m.matches();
     }
 

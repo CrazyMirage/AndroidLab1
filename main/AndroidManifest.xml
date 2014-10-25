@@ -21,6 +21,13 @@
         </activity>
         <activity android:name=".Detail">
         </activity>
+        <provider
+            android:authorities="com.example.anton.myapp"
+            android:name=".MyContentProvider"
+            android:exported="true"
+            android:grantUriPermissions="true" >
+        </provider>
+
     </application>
 
 </manifest>
