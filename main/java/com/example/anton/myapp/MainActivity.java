@@ -69,9 +69,6 @@ public class MainActivity extends Activity {
             insertToDB(student);
 
             Intent intent = new Intent(this, MyListActivity.class);
-            intent.putExtra("Name", name);
-            intent.putExtra("Mail", mail);
-            intent.putExtra("Phone", phone);
             intent.putExtra("Student", student);
             startActivity(intent);
 
@@ -100,21 +97,15 @@ public class MainActivity extends Activity {
 
 
     public boolean checkName(String name){
-        Matcher m = namePattern.matcher(name);
-        Log.i("name",name + " " + m.matches());
-        return m.matches();
+        return check(name,namePattern);
     }
 
     public boolean checkMail(String mail){
-        Matcher m = mailPattern.matcher(mail);
-        Log.i("mail",mail + " " + m.matches());
-        return m.matches();
+        return check(mail,mailPattern);
     }
 
     public boolean checkPhone(String phone){
-        Matcher m = phonePattern.matcher(phone);
-        Log.i("phone",phone + " " + m.matches());
-        return m.matches();
+        return check(phone,phonePattern);
     }
 
     public boolean check(String text, Pattern pattern){
@@ -125,6 +116,10 @@ public class MainActivity extends Activity {
     public void openList(View view) {
         Intent intent = new Intent(this,MyListActivity.class);
         startActivity(intent);
+    }
+
+    public void npcButtonPressed(View view){
+
     }
 
 

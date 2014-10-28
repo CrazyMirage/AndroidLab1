@@ -66,6 +66,5 @@ public class Detail extends Activity {
         Log.e("Telephone", number);
 
         startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(number)));
-
     }
 }

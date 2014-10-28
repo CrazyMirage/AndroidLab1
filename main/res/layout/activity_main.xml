@@ -81,6 +81,7 @@
         android:id="@+id/npcButton"
         android:layout_gravity="center_horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="npcButtonPressed"/>
 
 </RelativeLayout>

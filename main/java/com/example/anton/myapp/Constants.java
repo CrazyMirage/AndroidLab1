@@ -4,6 +4,10 @@ package com.example.anton.myapp;
 
 public class Constants {
 
+
+    public final static String BROADCAST_ACTION = "com.example.anton.myapp.RECEIVER";
+    public final static String STUDENT_ADD_TASK = "Student";
+
     // constants for content provider
     // content://<authority>
     // content://com.examples.ContentProviderDemo
