@@ -9,6 +9,8 @@
     <string name="phone">Phone</string>
     <string name="add">Add</string>
     <string name="list">List</string>
+    <string name="npcButtonStart">Start NPC</string>>
+    <string name="npcButtonStop">Stop NPC</string>>
     <string name="title_activity_list">ListActivity</string>
     <string name="regular_expression_error">Wrong data</string>
     <string name="title_activity_my_list">MyListActivity</string>

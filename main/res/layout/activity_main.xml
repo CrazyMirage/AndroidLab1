@@ -74,4 +74,13 @@
         android:layout_alignParentStart="true"
         android:onClick="openList" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/npcButtonStart"
+        android:id="@+id/npcButton"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

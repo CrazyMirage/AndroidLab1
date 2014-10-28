@@ -23,7 +23,11 @@ public class MyListActivity extends Activity {
 
     // элементы списка которые будут в него внесены
 
+
+
     Cursor cursor;
+    private static  boolean dbRead = false;
+    private static ArrayList<Student> studentArrayList = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,23 @@ public class MyListActivity extends Activity {
         setContentView(R.layout.activity_my_list);
 
 
-        ArrayList<Student> studentArrayList = CreateStudentList();
+        if(!dbRead){
+            studentArrayList = CreateStudentList();
+            dbRead = true;
+        }
+
+
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("Name");
+        String mail = intent.getStringExtra("Mail");
+        String phone = intent.getStringExtra("Phone");
+        Student student = getIntent().getParcelableExtra(Student.class.getCanonicalName());
+
+        Log.i("intent message", name +" "+ mail + " "+ phone);
+
+        if(student != null){
+            studentArrayList.add(student);
+        }
 
         // Связываемся с ListView
         ListView list = (ListView) findViewById(R.id.listView);
@@ -50,34 +70,11 @@ public class MyListActivity extends Activity {
 
         list.setAdapter(adapter);
 
-        Intent intent = getIntent();
-        String name = intent.getStringExtra("Name");
-        String mail = intent.getStringExtra("Mail");
-        String phone = intent.getStringExtra("Phone");
-
-        Log.i("intent message", name +" "+ mail + " "+ phone);
 
     }
 
     private ArrayList<Student> CreateStudentList(){
         ArrayList<Student> studentList = new ArrayList<Student>();
-        /*DbReader mDbHelper = new DbReader(this.getApplicationContext());
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                DbReader.COLUMN_NAME,
-                DbReader.COLUMN_MAIL,
-                DbReader.COLUMN_PHONE
-        };
-
-        cursor = db.query(
-                DbReader.TABLE_NAME,  // The table to query
-                projection,                               // The columns to return
-                null,                                // The columns for the WHERE clause
-                null,                            // The values for the WHERE clause
-                null,                                     // don't group the rows
-                null,                                     // don't filter by row groups
-                null                                 // The sort order
-        );*/
         cursor = getStudentsFromDB();
         if(cursor.getCount() > 0){
             cursor.moveToFirst();

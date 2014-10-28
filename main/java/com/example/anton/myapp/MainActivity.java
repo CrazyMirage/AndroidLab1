@@ -24,13 +24,11 @@ public class MainActivity extends Activity {
     private static final Pattern namePattern = Pattern.compile("^[a-zA-ZА-Яа-я]{3,15}$");
     private static final Pattern mailPattern = Pattern.compile(".+@.+");
     private static final Pattern phonePattern = Pattern.compile("^\\+[0-9]*$");
-    private DbReader mDbHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDbHelper = new DbReader(this.getApplicationContext());
         setContentView(R.layout.activity_main);
     }
 
@@ -55,26 +53,18 @@ public class MainActivity extends Activity {
 
 
     public void addToList(View view){
-        String name = ((EditText)findViewById(R.id.nameEdit)).getText().toString();
-        String mail = ((EditText)findViewById(R.id.mailEdit)).getText().toString();
-        String phone = ((EditText)findViewById(R.id.phoneEdit)).getText().toString();
+        EditText nameField = ((EditText)findViewById(R.id.nameEdit));
+        EditText mailField = ((EditText)findViewById(R.id.mailEdit));
+        EditText phoneField = ((EditText)findViewById(R.id.phoneEdit));
+
+        String name = nameField.getText().toString();
+        String mail = mailField.getText().toString();
+        String phone = phoneField.getText().toString();
 
 
 
         if(checkName(name) && checkMail(mail) && checkPhone(phone)){
 
-            /*SQLiteDatabase db = mDbHelper.getWritableDatabase();
-
-            ContentValues values = new ContentValues();
-            values.put(DbReader.COLUMN_NAME, name);
-            values.put(DbReader.COLUMN_MAIL, mail);
-            values.put(DbReader.COLUMN_PHONE, phone);
-
-            long newRowId;
-            newRowId = db.insert(
-                    DbReader.TABLE_NAME,
-                    DbReader.COLUMN_NAME_NULLABLE,
-                    values);*/
             Student student = new Student(name, mail,phone);
             insertToDB(student);
 
@@ -82,7 +72,13 @@ public class MainActivity extends Activity {
             intent.putExtra("Name", name);
             intent.putExtra("Mail", mail);
             intent.putExtra("Phone", phone);
+            intent.putExtra("Student", student);
             startActivity(intent);
+
+
+            nameField.setText("Name" );
+            mailField.setText("");
+            phoneField.setText("");
         }
         else{
             Toast.makeText(this, R.string.regular_expression_error,
@@ -95,7 +91,7 @@ public class MainActivity extends Activity {
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, student.name);
-        values.put(COLUMN_NAME, student.mail);
+        values.put(COLUMN_MAIL, student.mail);
         values.put(COLUMN_PHONE, student.phone);
 
 
@@ -127,7 +123,7 @@ public class MainActivity extends Activity {
     }
 
     public void openList(View view) {
-        Intent intent = new Intent(this, MyListActivity.class);
+        Intent intent = new Intent(this,MyListActivity.class);
         startActivity(intent);
     }
 
